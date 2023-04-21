@@ -2,7 +2,6 @@ package spider
 
 import (
 	"bytes"
-	"regexp"
 	"strings"
 	"unicode/utf8"
 
@@ -54,9 +53,7 @@ func html2md(html string) (res string, err error) {
 		Filter: []string{"pre"},
 		Replacement: func(content string, selec *goquery.Selection, options *md.Options) *string {
 			codeElement := selec.Find("code")
-			language := codeElement.AttrOr("class", "")
-			re := regexp.MustCompile("language-(\\w*)")
-			language = string(re.FindSubmatch([]byte(language))[1])
+			language := codeElement.AttrOr("lang", "")
 
 			code := getCodeContent(selec)
 
